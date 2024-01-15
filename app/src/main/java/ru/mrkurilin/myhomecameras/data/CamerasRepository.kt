@@ -11,7 +11,7 @@ class CamerasRepository(
     private val apiService: ApiService,
 ) {
 
-    suspend fun init(){
+    suspend fun updateIfEmpty(){
         if (localDataStorage.isCamerasEmpty()) {
             updateLocalData()
         }

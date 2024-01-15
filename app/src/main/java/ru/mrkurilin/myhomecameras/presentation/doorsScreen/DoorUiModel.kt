@@ -12,13 +12,13 @@ data class DoorUiModel(
 
     companion object {
 
-        fun fromDoorEntity(doorEntity: DoorEntity): DoorUiModel {
+        fun DoorEntity.toDoorUiModel(): DoorUiModel {
             return DoorUiModel(
-                name = doorEntity.name,
-                room = doorEntity.room,
-                id = doorEntity.id,
-                favorites = doorEntity.favorites,
-                snapshot = doorEntity.snapshot,
+                name = this.name,
+                room = this.room,
+                id = this.id,
+                favorites = this.favorites,
+                snapshot = this.snapshot,
             )
         }
     }

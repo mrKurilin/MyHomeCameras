@@ -1,39 +1,23 @@
 package ru.mrkurilin.myhomecameras.data.remote
 
-import android.util.Log
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.get
-import io.ktor.serialization.kotlinx.json.json
-import ru.mrkurilin.myhomecameras.data.remote.model.GetCamerasResponse
-import ru.mrkurilin.myhomecameras.data.remote.model.GetDoorsResponse
+import ru.mrkurilin.myhomecameras.data.remote.model.CamerasResponse
+import ru.mrkurilin.myhomecameras.data.remote.model.DoorsResponse
 
-class ApiService {
-    private val client = HttpClient {
-        install(ContentNegotiation) {
-            json()
-        }
-        install(Logging) {
-            logger = object: Logger {
-                override fun log(message: String) {
-                    Log.i("HTTP Client", message, null)
-                }
-            }
-            level = LogLevel.ALL
-        }
+private const val CAMERAS_ENDPOINT = "api/rubetek/cameras/"
+private const val DOORS_ENDPOINT = "api/rubetek/doors/"
+
+class ApiService(
+    private val client: HttpClient,
+) {
+
+    suspend fun getCameras(): CamerasResponse {
+        return client.get(CAMERAS_ENDPOINT).body()
     }
 
-    suspend fun getCameras(): GetCamerasResponse {
-        return client.get(
-            "http://cars.cprogroup.ru/api/rubetek/cameras/"
-        ).body()
-    }
-
-    suspend fun getDoors(): GetDoorsResponse {
-        return client.get(
-            "http://cars.cprogroup.ru/api/rubetek/doors/"
-        ).body()
+    suspend fun getDoors(): DoorsResponse {
+        return client.get(DOORS_ENDPOINT).body()
     }
 }

@@ -12,14 +12,14 @@ data class CameraUiModel(
 ) {
 
     companion object{
-        fun fromEntity(cameraEntity: CameraEntity): CameraUiModel {
+        fun CameraEntity.toCameraUiModel(): CameraUiModel {
             return CameraUiModel(
-                id = cameraEntity.id,
-                favorites = cameraEntity.favorites,
-                name = cameraEntity.name,
-                rec = cameraEntity.rec,
-                room = cameraEntity.room,
-                snapshot = cameraEntity.snapshot,
+                id = this.id,
+                favorites = this.favorites,
+                name = this.name,
+                rec = this.rec,
+                room = this.room,
+                snapshot = this.snapshot,
             )
         }
     }

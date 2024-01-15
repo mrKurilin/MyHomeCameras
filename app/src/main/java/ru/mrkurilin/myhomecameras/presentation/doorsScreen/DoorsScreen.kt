@@ -11,6 +11,7 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,10 +24,10 @@ import ru.mrkurilin.myhomecameras.presentation.util.RoomCard
 fun DoorsScreen(
     doorsViewModel: DoorsViewModel = viewModel()
 ) {
-    val doorsScreenState = doorsViewModel.doorsStateStateFlow.collectAsState().value
+    val doorsUIState by doorsViewModel.doorsUIStateStateFlow.collectAsState()
 
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = doorsScreenState.updating,
+        refreshing = doorsUIState.updating,
         onRefresh = doorsViewModel::updateDoorsRepository
     )
 
@@ -42,8 +43,8 @@ fun DoorsScreen(
                 .pullRefresh(pullRefreshState)
                 .padding(8.dp),
         ) {
-            items(doorsScreenState.rooms.size) { index ->
-                val roomUiModel = doorsScreenState.rooms[index]
+            items(doorsUIState.rooms.size) { index ->
+                val roomUiModel = doorsUIState.rooms[index]
 
                 RoomCard(
                     roomName = roomUiModel.name,
@@ -54,10 +55,10 @@ fun DoorsScreen(
         }
 
         PullRefreshIndicator(
-            refreshing = doorsScreenState.updating,
+            refreshing = doorsUIState.updating,
             state = pullRefreshState,
             modifier = Modifier.align(Alignment.TopCenter),
-            backgroundColor = if (doorsScreenState.updating) Color.Red else Color.Green,
+            backgroundColor = if (doorsUIState.updating) Color.Red else Color.Green,
         )
     }
 }

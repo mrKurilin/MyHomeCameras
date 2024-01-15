@@ -11,6 +11,7 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,10 +24,10 @@ import ru.mrkurilin.myhomecameras.presentation.util.RoomCard
 fun CamerasScreen(
     camerasViewModel: CamerasViewModel = viewModel()
 ) {
-    val camerasScreenState = camerasViewModel.camerasScreenStateStateFlow.collectAsState().value
+    val camerasUIState by camerasViewModel.camerasUIStateStateFlow.collectAsState()
 
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = camerasScreenState.updating,
+        refreshing = camerasUIState.updating,
         onRefresh = camerasViewModel::updateCamerasRepository
     )
 
@@ -42,8 +43,8 @@ fun CamerasScreen(
             modifier = Modifier
                 .padding(8.dp),
         ) {
-            items(camerasScreenState.rooms.size) { index ->
-                val roomUiModel = camerasScreenState.rooms[index]
+            items(camerasUIState.rooms.size) { index ->
+                val roomUiModel = camerasUIState.rooms[index]
 
                 RoomCard(
                     roomName = roomUiModel.name,
@@ -54,10 +55,10 @@ fun CamerasScreen(
         }
 
         PullRefreshIndicator(
-            refreshing = camerasScreenState.updating,
+            refreshing = camerasUIState.updating,
             state = pullRefreshState,
             modifier = Modifier.align(Alignment.TopCenter),
-            backgroundColor = if (camerasScreenState.updating) Color.Red else Color.Green,
+            backgroundColor = if (camerasUIState.updating) Color.Red else Color.Green,
         )
     }
 }

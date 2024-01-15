@@ -21,6 +21,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        android.buildFeatures.buildConfig = true
+        buildConfigField( "String", "BASE_URL", "\"http://cars.cprogroup.ru/\"")
     }
 
     buildTypes {

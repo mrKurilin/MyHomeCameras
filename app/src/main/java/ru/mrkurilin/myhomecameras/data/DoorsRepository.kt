@@ -11,7 +11,7 @@ class DoorsRepository(
     private val apiService: ApiService,
 ) {
 
-    suspend fun init(){
+    suspend fun updateIfEmpty(){
         if (localDataStorage.isDoorsEmpty()) {
             updateLocalData()
         }
